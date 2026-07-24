@@ -93,6 +93,7 @@ async function fetchMessages() {
     const messages = await response.json();
 
     if (messages.length > loadedMessageCount) {
+      const isFirstLoad = loadedMessageCount === 0;
       const newMessages = messages.slice(loadedMessageCount);
 
       newMessages.forEach(msg => {
@@ -120,10 +121,15 @@ async function fetchMessages() {
 
       loadedMessageCount = messages.length;
 
-      chatMessages.scrollTo({
-        top: chatMessages.scrollHeight,
-        behavior: 'smooth'
-      });
+      // Beim ersten Laden sofort hart nach unten springen (kein Ruckeln beim Tippen)
+      if (isFirstLoad) {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      } else {
+        chatMessages.scrollTo({
+          top: chatMessages.scrollHeight,
+          behavior: 'smooth'
+        });
+      }
     }
 
   } catch (error) {
