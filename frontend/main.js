@@ -2,7 +2,7 @@ const msgCenter = document.getElementById('msg-center');
 const textInput = document.getElementById('text-field');
 const chatMessages = document.getElementById('chat-messages');
 
-const API_URL = "http://127.0.0.1:5000";
+const API_URL = "https://chat-app-umkp.onrender.com";
 
 const urlParams = new URLSearchParams(window.location.search);
 let currentRoom = urlParams.get('room') || "global";
@@ -121,7 +121,7 @@ async function fetchMessages() {
 
       loadedMessageCount = messages.length;
 
-      // Beim ersten Laden sofort hart nach unten springen (kein Ruckeln beim Tippen)
+      
       if (isFirstLoad) {
         chatMessages.scrollTop = chatMessages.scrollHeight;
       } else {
