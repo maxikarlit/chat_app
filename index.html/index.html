@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+<meta name="description" content="Asterisk Chat - Unfiltered, open expression. Join private rooms or chat globally with no registration needed.">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Asterisk Chat">
+<meta property="og:description" content="Unfiltered, open expression. Join private rooms or chat globally.">
+<meta property="og:image" content="../img/asterisk_chat_logo.png">
+<meta property="og:url" content="https://your-domain.com">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Asterisk Chat">
+<meta name="twitter:description" content="Unfiltered, open expression. Join private rooms or chat globally.">
+<meta name="twitter:image" content="../img/asterisk_chat_logo.png">
+        <title>Global Chat</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel="stylesheet" href="../styles.css/styles.css">
+    </head>
+    <body class="body">
+        <div class="grid-container">
+            <header class="header-background">
+                <figure class="asterisk-chat-logo">
+                  <a href="index.html"><img src="../img/asterisk_chat_logo.png" width="110rem"></a>
+                </figure>
+                <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; padding-right: 1rem;">
+        <h1 class="chat-title" style="color: white; margin: 0;">Global Chat</h1>
+        <a href="rooms.html" style="background: #4da6ff; color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 0.3rem; font-size: 0.9rem;">
+            Private Rooms
+        </a>
+    </div>
+            </header>
+            <main class="main-background">
+                <section class="chat-container">
+
+                    <div id="chat-messages" class="chat-messages"></div>
+
+                    <form id="msg-center">
+                        <button type="submit" id="send-btn">
+                            <i class="fa-solid fa-angle-up send-button"></i>
+                        </button>
+                        <input
+                            class="text-field"
+                            id="text-field"
+                            placeholder="Enter your Message..."
+                            autocomplete="off" required maxlength="300">
+                    </form>
+
+                </section>
+            </main>
+            <footer class="footer-background">
+                <p>&copy; 2026 Asterisk - All Rights Reserved</p>
+              <div>
+                <a href="mailto:asterisksupport@protonmail.com">Support</a>
+                <a href="terms.html">Terms of Service</a>
+              </div>
+            </footer>
+        </div>
+        <script src="../main.js/main.js"></script>
+    </body>
+</html>

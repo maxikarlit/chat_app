@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Rooms</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../styles.css/styles.css">
+    <style>
+        .rooms-wrapper {
+            width: 100%;
+            max-width: 600px;
+            box-sizing: border-box;
+            padding: 1rem;
+        }
+
+        .action-btn {
+            background-color: rgb(113, 113, 113);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .action-btn:hover {
+            background-color: rgb(140, 140, 140);
+        }
+
+        .room-item {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            width: 100%;
+        }
+
+        .room-btn {
+            flex: 1;
+            background-color: rgb(55, 55, 55);
+            color: white;
+            border: none;
+            padding: 0.8rem 1rem;
+            border-radius: 0.5rem;
+            text-align: left;
+            cursor: pointer;
+            font-size: 0.95rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .room-btn:hover {
+            background-color: rgb(70, 70, 70);
+        }
+
+        .room-input-container {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            width: 100%;
+        }
+
+        .room-input-container input {
+            flex: 1;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 600px) {
+            .rooms-wrapper {
+                padding: 0.5rem;
+            }
+
+            .room-input-container {
+                flex-direction: column;
+            }
+
+            .room-input-container button {
+                width: 100%;
+            }
+
+            .text-field {
+                padding-right: 1rem !important;
+            }
+
+            .header-background {
+                flex-direction: column;
+                align-items: flex-start;
+                padding-bottom: 0.5rem;
+            }
+
+            .header-background > div {
+                padding-left: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="body">
+    <div class="grid-container">
+        <header class="header-background">
+            <figure class="asterisk-chat-logo">
+               <a href="index.html"><img src="../img/asterisk_chat_logo.png" width="110rem"></a>
+            </figure>
+            <h1 class="chat-title" style="color: white; padding-left: 1rem;">Private Rooms</h1>
+        </header>
+
+        <main class="main-background">
+            <section class="chat-container rooms-wrapper">
+                <div class="chat-messages">
+                    <h2>Join or Create a Private Room</h2>
+
+                    <div class="room-input-container">
+                        <input id="room-input" class="text-field" placeholder="Enter Room Code..." autocomplete="off">
+                        <button onclick="joinRoomFromInput()" class="action-btn">
+                            <i class="fa-solid fa-arrow-right"></i> Join
+                        </button>
+                    </div>
+
+                    <button onclick="generateRandomRoom()" class="action-btn" style="width: 100%; margin-bottom: 1.5rem;">
+                        <i class="fa-solid fa-dice"></i> Generate Random Room Code
+                    </button>
+
+                    <hr style="border: 1px solid rgb(100, 100, 100); width: 100%; margin: 1rem 0;">
+
+                    <h3>Your Private Chats</h3>
+                    <div id="saved-rooms-list"></div>
+
+                    <div style="margin-top: 2rem;">
+                        <a href="index.html" style="text-decoration: none;">
+                            <button type="button" class="action-btn" style="width: 100%;">
+                                <i class="fa-solid fa-earth-americas"></i> Return to Global Chat
+                            </button>
+                        </a>
+                    </div>
+
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer-background">
+            <p class="text-padding">&copy; 2026 Asterisk - All Rights Reserved</p>
+            <div>
+                <a href="mailto:asterisksupport@protonmail.com">Support</a>
+                <a href="terms.html">Terms of Service</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function getSavedRooms() {
+            return JSON.parse(localStorage.getItem('asterisk_saved_rooms') || '[]');
+        }
+
+        function saveRoom(roomCode) {
+            let rooms = getSavedRooms();
+            if (!rooms.includes(roomCode)) {
+                rooms.push(roomCode);
+                localStorage.setItem('asterisk_saved_rooms', JSON.stringify(rooms));
+            }
+        }
+
+        function removeRoom(roomCode, event) {
+            event.stopPropagation();
+            let rooms = getSavedRooms();
+            rooms = rooms.filter(r => r !== roomCode);
+            localStorage.setItem('asterisk_saved_rooms', JSON.stringify(rooms));
+            renderRooms();
+        }
+
+        function renderRooms() {
+            const list = document.getElementById('saved-rooms-list');
+            const rooms = getSavedRooms();
+
+            if (rooms.length === 0) {
+                list.innerHTML = '<p style="color: #ccc;">No private rooms saved yet.</p>';
+                return;
+            }
+
+            list.innerHTML = '';
+            rooms.forEach(room => {
+                const item = document.createElement('div');
+                item.className = 'room-item';
+
+                const btn = document.createElement('button');
+                btn.className = 'room-btn';
+                btn.innerHTML = `<i class="fa-solid fa-lock"></i> Room: <b>${room}</b>`;
+                btn.onclick = () => window.location.href = `index.html?room=${encodeURIComponent(room)}`;
+
+                const delBtn = document.createElement('button');
+                delBtn.className = 'delete-btn';
+                delBtn.innerHTML = '🗑️';
+                delBtn.title = 'Remove from list';
+                delBtn.style.fontSize = '1.2rem';
+                delBtn.onclick = (e) => removeRoom(room, e);
+
+                item.appendChild(btn);
+                item.appendChild(delBtn);
+                list.appendChild(item);
+            });
+        }
+
+        function joinRoomFromInput() {
+            const input = document.getElementById('room-input').value.trim();
+            if (input) {
+                saveRoom(input);
+                window.location.href = `index.html?room=${encodeURIComponent(input)}`;
+            }
+        }
+
+        function generateRandomRoom() {
+            const randomCode = 'room-' + Math.random().toString(36).substring(2, 9);
+            saveRoom(randomCode);
+            window.location.href = `index.html?room=${encodeURIComponent(randomCode)}`;
+        }
+
+        renderRooms();
+    </script>
+</body>
+</html>
